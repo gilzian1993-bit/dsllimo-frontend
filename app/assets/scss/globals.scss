@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// root css - colors come from config/thems.ts via ThemeVarsStyle
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-[#EEF1F9] dark:bg-background text-foreground text-sm;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .avatarGroup {
+    >span {
+      @apply hover:-translate-y-1 hover:relative hover:z-10 transition-transform;
+    }
+  }
+}
+
+@layer components {}
+
+// .has-sticky-header {
+//   &::after {
+//     position: absolute;
+//     z-index: -10;
+//     --tw-backdrop-blur: blur(12px);
+//     backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+//       var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+//       var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+//       var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+//       var(--tw-backdrop-sepia);
+//     --tw-content: "";
+//     content: var(--tw-content);
+//     background: linear-gradient(
+//       180deg,
+//       hsl(var(--background) / 0.7) 44%,
+//       hsl(var(--background) / 0.43) 73%,
+//       hsl(var(--background) / 0)
+//     );
+//     background-repeat: repeat;
+//     block-size: 5.5rem;
+//     inset-block-start: -1.5rem;
+//     inset-inline-end: 0;
+//     inset-inline-start: 0;
+//     -webkit-mask: linear-gradient(black, black 18%, transparent 100%);
+//     mask: linear-gradient(black, black 18%, transparent 100%);
+//   }
+// }
+
+.CollapsibleContent {
+  overflow: hidden;
+}
+
+.CollapsibleContent[data-state="open"] {
+  animation: slideDown 300ms ease-out;
+}
+
+.CollapsibleContent[data-state="closed"] {
+  animation: slideUp 300ms ease-out;
+}
+
+.input-group :not(:first-child) input {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.input-group.merged :not(:first-child) input {
+  border-left-width: 0 !important;
+  padding-left: 0px !important;
+}
+
+.input-group :not(:last-child) input {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.input-group.merged :not(:last-child) input {
+  border-right: 0px !important;
+  padding-right: 0px !important;
+}
+
+[dir="rtl"] {}
+
+.ck {
+  .ck-editor__editable {
+    min-height: 245px !important;
+  }
+}
+
+// auth
+.loginwrapper {
+  min-height: calc(var(--vh, 1vh) * 100);
+  flex-basis: 100%;
+}
+
+.loginwrapper .lg-inner-column {
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+@keyframes progress-bar-stripes {
+  0% {
+    background-position: 1rem 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+}
+
+.animate-stripes {
+  animation: progress-bar-stripes 1s linear infinite;
+}
+
+.dashboard-app {
+  .leaflet-control {
+    z-index: 0 !important;
+  }
+
+  .leaflet-container {
+    z-index: 0 !important;
+    position: relative;
+  }
+}
+
+.page-min-height {
+  min-height: calc(var(--vh, 1vh) * 100 - 117px);
+}
+
+.page-min-height-semibox {
+  min-height: calc(var(--vh, 1vh) * 100 - 200px);
+}
+
+.page-min-height-horizontal {
+  min-height: calc(var(--vh, 1vh) * 100 - 170px);
+}
+
+.app-height {
+  height: calc(var(--vh, 1vh) * 100 - 11.1rem) !important;
+}
+
+@media (max-width: 768px) {
+  .app-height {
+    height: calc(var(--vh, 1vh) * 100 - 10.5rem) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .semibox-content-wrapper {
+    margin-left: 56px;
+    margin-right: 56px;
+  }
+}
+
+.layout-padding {
+  padding-bottom: 112px;
+}
+
+@media (min-width: 768px) {
+  .layout-padding {
+    padding-bottom: 37px;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0px;
+}
+
+.no-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+@import "partials/calendar.scss";
+@import "partials/react-slect";
+@import "partials/map";
+@import "partials/shepherd";

@@ -8,6 +8,11 @@ const shouldBypassEdgeAuth = (request: NextRequest): boolean => {
   if (!BACKEND_URL) return false;
 
   try {
+    // When backend sets cookies with COOKIE_DOMAIN (e.g. .example.com), the browser sends them to the dashboard too —
+    // middleware can enforce auth. Do not skip in that case.
+    const sharedCookieDomain = process.env.NEXT_PUBLIC_COOKIE_DOMAIN?.trim();
+    if (sharedCookieDomain) return false;
+
     const backendHost = new URL(BACKEND_URL).hostname;
     return backendHost !== request.nextUrl.hostname;
   } catch {

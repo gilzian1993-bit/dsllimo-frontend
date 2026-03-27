@@ -13,7 +13,12 @@ export const useLogin = () => {
         onSuccess: (response) => {
             if (response.success) {
                 toast.success(response.message || "Logged in successfully!");
-                router.push(redirect);
+                // Full navigation so Safari/iOS commits Set-Cookie before middleware runs (client-side router.push can race).
+                if (typeof window !== "undefined") {
+                    window.location.assign(redirect);
+                } else {
+                    router.push(redirect);
+                }
             } else {
                 toast.error(response.message || "Login failed");
             }

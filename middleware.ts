@@ -2,24 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const authRoutes = ["/auth/login", "/auth/register"];
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-const shouldBypassEdgeAuth = (request: NextRequest): boolean => {
-  if (!BACKEND_URL) return false;
-
-  try {
-    const backendHost = new URL(BACKEND_URL).hostname;
-    return backendHost !== request.nextUrl.hostname;
-  } catch {
-    return false;
-  }
-};
 
 export function middleware(request: NextRequest) {
-  if (shouldBypassEdgeAuth(request)) {
-    return NextResponse.next();
-  }
-
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get("adminAccessToken")?.value;
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));

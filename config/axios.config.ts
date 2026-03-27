@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+// Browser: use same-origin `/api` so Next.js rewrites proxy to the backend and auth cookies
+// are first-party on the dashboard host. Server (if ever used): call backend directly.
+const baseURL =
+  typeof window !== "undefined" ? "" : process.env.NEXT_PUBLIC_BACKEND_URL || "";
 
 export const api = axios.create({
   baseURL,

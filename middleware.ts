@@ -8,9 +8,6 @@ const shouldBypassEdgeAuth = (request: NextRequest): boolean => {
   if (!BACKEND_URL) return false;
 
   try {
-    // API and dashboard are usually on different hosts. Cookies are set for the API host unless COOKIE_DOMAIN is set
-    // on the backend; in that split setup the Next.js edge cannot see httpOnly cookies, so requiring them here breaks
-    // login (redirect loop). Only same-hostname setups (e.g. localhost) get strict middleware.
     const backendHost = new URL(BACKEND_URL).hostname;
     return backendHost !== request.nextUrl.hostname;
   } catch {

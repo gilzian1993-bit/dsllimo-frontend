@@ -61,6 +61,8 @@ export interface AuthTokens {
 export interface LoginResponseData {
   user: AdminData;
   role: string;
+  token?: string;
+  refreshToken?: string;
 }
 
 /**

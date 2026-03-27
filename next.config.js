@@ -1,7 +1,25 @@
 /** @type {import('next').NextConfig} */
 
+// Proxy API to the Express backend so the browser sees same-origin `/api/*` requests.
+// That way Set-Cookie from login applies to the dashboard host (fixes mobile Safari/Chrome
+// blocking cross-site cookies on XHR). NEXT_PUBLIC_BACKEND_URL must be the real API base (no trailing slash).
+const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || "").replace(
+  /\/$/,
+  ""
+);
 
 const nextConfig = {
+  async rewrites() {
+    if (!backendUrl) {
+      return [];
+    }
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${backendUrl}/api/:path*`,
+      },
+    ];
+  },
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>

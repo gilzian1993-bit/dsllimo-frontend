@@ -5,7 +5,7 @@ import { FleetTableRow } from "../types/fleet.types";
 export interface ExpressBooking {
     _id: string;
     bookingNumber: string;
-    category: "one-way" | "hourly";
+    category: "one-way" | "hourly" | "return-trip";
     customer?: string;
     vehicle: string | FleetTableRow;
     passengerDetails: {
@@ -27,6 +27,16 @@ export interface ExpressBooking {
         isAirportPickup?: boolean;
         isMeetGreet?: boolean;
         isReturnMeetGreet?: boolean;
+        returnDate?: string;
+        returnTime?: string;
+        childSeats?: {
+            seatId: string;
+            quantity: number;
+        }[];
+        returnChildSeats?: {
+            seatId: string;
+            quantity: number;
+        }[];
         instructions?: string;
     };
     amount: number;
@@ -68,5 +78,12 @@ export const deleteBookings = async (ids: string[]): Promise<{ success: boolean;
 
 export const getBooking = async (id: string): Promise<{ success: boolean; data: ExpressBooking }> => {
     const response = await api.get<{ success: boolean; data: ExpressBooking }>(`${API_ROUTES.BOOKINGS}/${id}`);
+    return response.data;
+};
+
+export const getBookingReceipt = async (id: string): Promise<Blob> => {
+    const response = await api.get(`${API_ROUTES.BOOKINGS}/${id}/receipt`, {
+        responseType: "blob",
+    });
     return response.data;
 };

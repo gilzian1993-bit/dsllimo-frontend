@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getBookings, deleteBooking, deleteBookings, getBooking } from "@/lib/api/booking";
+import { getBookings, deleteBooking, deleteBookings, getBooking, getBookingReceipt } from "@/lib/api/booking";
 import { toast } from "sonner";
 
 export const useGetBooking = (id: string) => {
@@ -43,6 +43,25 @@ export const useDeleteBookings = () => {
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.message || "Failed to delete bookings");
+        },
+    });
+};
+
+export const useDownloadBookingReceipt = () => {
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const blob = await getBookingReceipt(id);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `Receipt-${id.slice(-8)}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        },
+        onError: (error: any) => {
+            toast.error(error.response?.data?.message || "Failed to download receipt");
         },
     });
 };

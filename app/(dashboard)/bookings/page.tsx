@@ -7,6 +7,7 @@ import { useBookings, useDeleteBooking, useDeleteBookings } from "@/hooks/use-bo
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 import type { ExpressBooking } from "@/lib/api/booking";
+import { useRouter } from "next/navigation";
 
 const BookingsPage = () => {
     const [page, setPage] = React.useState(1);
@@ -15,6 +16,7 @@ const BookingsPage = () => {
 
     const { mutateAsync: deleteBooking } = useDeleteBooking();
     const { mutateAsync: deleteBookings, isPending: isDeleting } = useDeleteBookings();
+    const router = useRouter();
 
     const [selectedToDelete, setSelectedToDelete] = React.useState<ExpressBooking[]>([]);
     const [isBulkDeleteDialogOpen, setIsBulkDeleteDialogOpen] = React.useState(false);
@@ -22,6 +24,9 @@ const BookingsPage = () => {
     const columns = getBookingColumns({
         onDelete: async (booking) => {
             await deleteBooking(booking._id);
+        },
+        onView: (booking) => {
+            router.push(`/bookings/${booking._id}`);
         },
     });
 

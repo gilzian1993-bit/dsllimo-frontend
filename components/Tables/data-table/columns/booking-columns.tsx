@@ -6,13 +6,15 @@ import { format } from "date-fns";
 
 import { DataTableColumnHeader } from "../data-table-column-header";
 import { DataTableRowActions } from "../data-table-row-actions";
-import { Trash2 } from "lucide-react";
+import { Trash2, Eye } from "lucide-react";
 import { formatDashboardPrice } from "@/lib/utils/formatters";
 
 export function getBookingColumns({
     onDelete,
+    onView,
 }: {
     onDelete?: (booking: ExpressBooking) => Promise<void>;
+    onView?: (booking: ExpressBooking) => void;
 }): ColumnDef<ExpressBooking>[] {
     return [
         {
@@ -178,6 +180,11 @@ export function getBookingColumns({
                 const booking = row.original;
 
                 const actions = [
+                    {
+                        label: "View",
+                        onClick: onView ? () => onView(booking) : undefined,
+                        icon: <Eye className="h-4 w-4" />,
+                    },
                     {
                         label: "Delete",
                         onClick: onDelete ? () => onDelete(booking) : undefined,
